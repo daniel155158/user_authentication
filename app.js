@@ -3,6 +3,7 @@ const app = express()
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const User = require('./models/user')
 const port = 3000
 
 //Template engine setting
@@ -29,7 +30,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  res.render('home')
+  const { email, password } = req.body
+  User.findOne({ email, password })
+    .lean()
+    .then((user) => {
+      if (user) {
+        const firstName = user.firstName
+        res.render('show', { firstName })
+      } else {
+        res.render('home', { fail: 'fail' })
+      }
+    })
+    .catch(error => console.error(error))
 })
 
 app.listen(port, () => {
