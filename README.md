@@ -37,3 +37,4 @@ App is listening on http://localhost:3000
 * Dotenv
 * Bootstrap
 * Body-parser
+* Cookie-parser
